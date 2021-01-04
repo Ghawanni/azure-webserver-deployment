@@ -1,0 +1,33 @@
+{
+	"variables": {
+    "client_id": "ab50a942-4046-4e26-8367-74cef555c099",
+    "client_secret": "g4ZhsB422xM2.~fq_L7_f1OB08mE4Sd.Yg",
+    "subscription_id": "4fc8a9ce-bdb4-476f-aa96-2948a69c3f62"
+	},
+	"builders": [{
+		"type": "azure-arm",
+		"client_id": "{{user `client_id`}}",
+    "client_secret": "{{user `client_secret`}}",
+    "subscription_id": "{{user `subscription_id`}}",
+
+    "os_type": "Linux",
+    "image_publisher": "Canonical",
+    "image_offer": "UbuntuServer",
+		"image_sku": "18.04-LTS",
+		
+    "managed_image_resource_group_name": "udacity-project-1-resources",
+    "managed_image_name": "Ubuntu18.04LTS",
+
+    "location": "East US",
+    "vm_size": "Standard_B1ls"
+
+		}],
+	"provisioners": [{
+		"inline": [
+			"echo 'Hello, World!' > index.html",
+			"nohup busybox httpd -f -p 80 &"
+		],
+		"inline_shebang": "/bin/sh -x",
+		"type": "shell"
+	}]
+}
