@@ -21,7 +21,8 @@ variable "VM-count"{
   default = 3
 }
 
-variable "image-id"{
-  description = "The id of the image to be used to build the VMs"
-  default = "/subscriptions/4fc8a9ce-bdb4-476f-aa96-2948a69c3f62/resourceGroups/udacity-project-1-resources/providers/Microsoft.Compute/images/Ubuntu18.04LTS"
-}
+# REPLACED BY A DATA SECTION IN MAIN.TF
+# variable "image-id"{
+#   description = "The id of the image to be used to build the VMs"
+#   default = "/subscriptions/4fc8a9ce-bdb4-476f-aa96-2948a69c3f62/resourceGroups/udacity-project-1-resources/providers/Microsoft.Compute/images/Ubuntu18.04LTS"
+# }

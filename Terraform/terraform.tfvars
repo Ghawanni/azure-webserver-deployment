@@ -1,0 +1,5 @@
+prefix          = "udacity-project-1"
+location        = "eastus"
+username        = "TF_VAR_VM_usernmae"
+password        = "TF_VAR_VM_password"
+VM-count        = "2"

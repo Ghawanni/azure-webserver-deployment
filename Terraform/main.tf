@@ -92,6 +92,14 @@ resource "azurerm_lb_backend_address_pool" "main" {
   name                = "BackEndAddressPool"
 }
 
+resource "azurerm_network_interface_backend_address_pool_association" "main" {
+  count                   = "${var.VM-count}"
+  network_interface_id    = azurerm_network_interface.main[count.index].id
+  ip_configuration_name   = "ip-config-name-${count.index}"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.main.id
+}
+
+
 resource "azurerm_availability_set" "main" {
   count               = "${var.VM-count}"
   name                = "${var.prefix}-aset-${count.index}"
@@ -99,8 +107,13 @@ resource "azurerm_availability_set" "main" {
   resource_group_name = azurerm_resource_group.main.name
 
   tags = {
-    environment = "Production"
+    project = "Deploying a Web Server in Azure"
   }
+}
+
+data "azurerm_image" "packer-img" {
+  name                = "Ubuntu18.04LTS"
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 
@@ -114,6 +127,10 @@ resource "azurerm_linux_virtual_machine" "main" {
   admin_password      = "${var.password}"
   disable_password_authentication = false
 
+  tags = {
+    project = "Deploying a Web Server in Azure"
+  }
+
   network_interface_ids = [
     "${element(azurerm_network_interface.main.*.id, count.index)}"
   ]
@@ -123,7 +140,7 @@ resource "azurerm_linux_virtual_machine" "main" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_id     = "${var.image-id}" 
+  source_image_id     = data.azurerm_image.packer-img.id
 }
 
 resource "azurerm_managed_disk" "main" {
@@ -136,6 +153,6 @@ resource "azurerm_managed_disk" "main" {
   disk_size_gb         = "1"
 
   tags = {
-    environment = "Production"
+    project = "Deploying a Web Server in Azure"
   }
 }
